@@ -32,7 +32,10 @@ public class PostServiceImplementation  implements PostService{
     }
     @Override
     public PostDTO createNewPost(PostDTO inputDTO) {
+
+        User user= (User) SecurityContextHolder.getContext().getAuthentication();
         PostEntity postEntity=modelMapper.map(inputDTO,PostEntity.class );
+        postEntity.setAuthor(user);
         return  modelMapper.map(postRepository.save(postEntity),PostDTO.class);
 
     }
@@ -40,8 +43,8 @@ public class PostServiceImplementation  implements PostService{
     @Override
     public PostDTO getPostById(Long   postId) {
 
-        User user= (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("user {}",user);
+//        User user= (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        log.info("user {}",user);
         PostEntity postEntity= postRepository
                 .findById(postId).orElseThrow(()->new ResourceNotFoundException("post was not found with id :"+postId));
         return modelMapper.map(postEntity,PostDTO.class);

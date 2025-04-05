@@ -24,6 +24,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserService userService;
 @Autowired
+
 @Qualifier("handlerExceptionResolver")
     private  HandlerExceptionResolver handlerExceptionResolver;
 
@@ -40,9 +41,10 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
             Long userId = jwtService.getUserIdFromToken(token);
             if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                User user = userService.getuserById(userId);
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);
+                User user = userService.getUserById(userId);
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
             filterChain.doFilter(request, response);

@@ -17,8 +17,8 @@ import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
-    private final UserRepository userRepository;
-    private  final ModelMapper modelMapper;
+    private  final UserRepository userRepository;
+    private   final ModelMapper modelMapper;
     private  final PasswordEncoder passwordEncoder;
 //    private final AuthenticationManager authenticationManager;
 //    private final JwtService jwtService;
@@ -30,12 +30,20 @@ public class UserService implements UserDetailsService {
 
         this.passwordEncoder = passwordEncoder;
     }
+
+    public  User getUserByEmail(String email) {
+        return  userRepository.findByEmail(email)
+                .orElse(null);
+
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return  userRepository.findByEmail(username)
                 .orElseThrow(()->new BadCredentialsException("user with this "+username +" not found"));
     }
-public  User  getuserById( Long userid) {
+
+     public  User  getUserById(Long userid) {
     return userRepository.findById(userid).orElseThrow(()->new ResourceNotFoundException("user with this " + userid + " not found"));
 }
     public UserDTO SignUp(SignUpDTO signUpDTO) {
@@ -48,6 +56,10 @@ public  User  getuserById( Long userid) {
         tocreatedUser.setPassword(passwordEncoder.encode(tocreatedUser.getPassword()));
         User savedUser=userRepository.save(tocreatedUser);
         return modelMapper.map(savedUser, UserDTO.class);
+    }
+
+    public User save(User newUser) {
+        return userRepository.save(newUser);
     }
 
 //    public  String LogIn(LoginDTO loginDTO) {

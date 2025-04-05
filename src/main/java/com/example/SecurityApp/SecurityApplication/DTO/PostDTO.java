@@ -15,5 +15,9 @@ public class PostDTO {
     @JsonProperty("description")
     private  String  description ;
 
+    private UserDTO author;
+
+
+
 
 }

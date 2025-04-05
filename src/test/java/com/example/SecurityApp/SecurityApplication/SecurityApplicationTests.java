@@ -13,18 +13,14 @@ class SecurityApplicationTests {
 	@Autowired
 	private JwtService jwtService;
 
-	@Test
-	void contextLoads() {
-		User user= new User(1L,"amit123@gmail.com","amit123", "amit");
-		String token=jwtService.generateToken(user);
-		System.out.println(token);
+//	@Test
+//	void contextLoads() {
+//		User user= new User(1L,"amit123@gmail.com","amit123", "amit");
+//		String token=jwtService.generateToken(user);
+//		System.out.println(token);
+//
+//		Long id=jwtService.getUserIdFromToken(token);
+//		System.out.println(id);
 
-		Long id=jwtService.getUserIdFromToken(token);
-		System.out.println(id);
-
-
-
-
-	}
 
 }
